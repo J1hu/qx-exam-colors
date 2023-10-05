@@ -9,6 +9,32 @@ function Colors() {
   const [details, setDetails] = useState({ name: "", hex: "", code: "" });
   const [isVisible, setIsVisible] = useState(false);
 
+  useEffect(() => {
+    async function fetchData() {
+      //fetch data from the api
+      try {
+        const response = await fetch(
+          "https://api.prolook.com/api/colors/prolook"
+        );
+        
+        // throw error response
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status ${response.status}`);
+        }
+
+        // put the data to the state
+        const data = await response.json();
+        setColors(data);
+
+      } catch (error) {
+        console.log("Error:", error);
+      }
+    }
+
+    // calling the async function
+    fetchData();
+  }, []);
+
   // HELPERS
   function getDetails(name, hex, code) {
     setDetails({ name, hex, code });
@@ -49,6 +75,7 @@ function Colors() {
       setIsVisible(true);
     };
 
+    // ColorList render
     return (
       <div className="color-list-wrapper">
         {colors.colors.map((color) => (
@@ -91,7 +118,8 @@ function Colors() {
     if (contrastRatio < 4.5) {
       textColor = "white";
     }
-  
+    
+    // ColorPreview render
     return (
       <div
         className="color-preview"
@@ -105,34 +133,8 @@ function Colors() {
       </div>
     );
   }
-  
 
-  useEffect(() => {
-    async function fetchData() {
-      //fetch data from the api
-      try {
-        const response = await fetch(
-          "https://api.prolook.com/api/colors/prolook"
-        );
-        
-        // throw error response
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status ${response.status}`);
-        }
-
-        // put the data to the state
-        const data = await response.json();
-        setColors(data);
-
-      } catch (error) {
-        console.log("Error:", error);
-      }
-    }
-
-    // calling the async function
-    fetchData();
-  }, []);
-
+  // Parent Component render
   return (
     <div className="whole-wrapper">
       <h1>Colors:</h1>

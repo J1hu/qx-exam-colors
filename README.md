@@ -1,3 +1,7 @@
+# QX EXAM COLOR PICKER
+![image](https://github.com/J1hu/qx-exam-colors/assets/96979598/692a076a-7b77-4990-b888-3cabe5c6be20)
+
+
 # How to run on local?
 1. Clone repo
 ```

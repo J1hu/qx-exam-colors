@@ -1,0 +1,50 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.center {
+  text-align: center;
+}
+
+.wrapper {
+  display: flex;
+  column-gap: 40px;
+  flex-direction: row;
+}
+
+.whole-wrapper {
+  width: 80%;
+  padding-top: 30px;
+  margin: 0 auto;
+}
+
+.color-box {
+  display: flex;
+  flex-direction: row;
+}
+
+.color-list-wrapper {
+  height: 800px;
+  width: 50%;
+  overflow-y: scroll;
+  border: solid 1px;
+  border-color: gainsboro;
+  border-radius: 15px;
+}
+
+/*used to hide scrollbar*/
+.color-list-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.color-preview {
+  height: 500px;
+  width: 800px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center vertically */
+  align-items: center; /* Center horizontally */
+  border: solid 1px;
+  border-color: gainsboro;
+  border-radius: 15px;
+}

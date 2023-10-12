@@ -10,26 +10,40 @@ interface Details {
   code: string;
 }
 
+interface ColorData {
+  name: string;
+  hex_code: string;
+  color_code: string;
+}
+
 // Parent Component
 function Colors() {
-  const [colors, setColors] = useState<any[]>([]); // Use 'any[]' as a temporary fix for the type of colors
-  const [details, setDetails] = useState<Details>({ name: "", hex: "", code: "" });
+  const [colors, setColors] = useState<ColorData[]>([]);
+  const [details, setDetails] = useState<Details>({
+    name: "",
+    hex: "",
+    code: "",
+  });
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
       // Fetch data from the API
       try {
-        const response = await fetch("https://api.prolook.com/api/colors/prolook");
+        const response = await fetch(
+          "https://api.prolook.com/api/colors/prolook"
+        );
 
         // Throw error response
         if (!response.ok) {
           throw new Error(`HTTP error! Status ${response.status}`);
         }
 
-        // Put the data to the state
-        const data = await response.json();
-        setColors(data);
+        const responseData = await response.json();
+
+        const colors: ColorData[] = responseData.colors;
+
+        setColors(colors);
       } catch (error) {
         console.log("Error:", error);
       }
@@ -46,7 +60,7 @@ function Colors() {
 
   // Function to calculate contrast ratio
   function calculateContrastRatio(hexColor: string): number {
-    const hexToRgb = (hex: string) => {
+    const hexToRgb = (hex: string): number[] => {
       const r = parseInt(hex.slice(0, 2), 16);
       const g = parseInt(hex.slice(2, 4), 16);
       const b = parseInt(hex.slice(4, 6), 16);
@@ -67,12 +81,12 @@ function Colors() {
 
   // COMPONENTS
   interface ColorListProps {
-    colors: any; // Use 'any' as a temporary fix for the type of colors
+    colors: ColorData[]; // Use the ColorData interface
   }
 
   function ColorList({ colors }: ColorListProps) {
     // Validation, can also be used as a loading screen when fetching data
-    if (!colors || !Array.isArray(colors.colors)) {
+    if (!colors || colors.length === 0) {
       return <div className="center wrapper fs-4">Loading...</div>;
     }
 
@@ -84,7 +98,7 @@ function Colors() {
     // ColorList render
     return (
       <div className="color-list-wrapper">
-        {colors.colors.map((color: any) => (
+        {colors.map((color: ColorData) => (
           <Stack key={color.name}>
             <ListGroup>
               <ListGroup.Item className="d-flex justify-content-between align-middle">
